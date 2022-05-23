@@ -18,7 +18,7 @@ const Login = () => {
   } = useForm();
   const location = useLocation();
   const navigate = useNavigate();
-  let from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/";
 
   let signInError;
 //   const [token] = useToken(user || gUser);
@@ -136,7 +136,7 @@ const Login = () => {
           </form>
           <p className="mt-3">
             <small>
-              New to Doctors Portal? <Link to="/signup">Sign Up</Link>{" "}
+              New to Doctors Portal? <Link className='text-secondary hover:underline font-bold' to="/signup">Sign Up</Link>{" "}
             </small>
           </p>
           <div className="divider">OR</div>

@@ -3,7 +3,7 @@ import bgfooter from "../../images/bgfooter.jpg";
 
 const Footer = () => {
   return (
-    <div
+    <div className="glass"
       style={{
         backgroundImage: `url(${bgfooter})`,
         backgroundRepeat: "repeat-y",

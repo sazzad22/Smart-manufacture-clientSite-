@@ -5,7 +5,8 @@ import {useAuthState} from 'react-firebase-hooks/auth';
 import { signOut } from 'firebase/auth';
 
 const Header = () => {
-    const [user] = useAuthState(auth);
+  const [user] = useAuthState(auth);
+  console.log(user);
     const handleSignOut = () => {
         signOut(auth);
     }
@@ -36,7 +37,7 @@ const Header = () => {
       );
     return (
         <div>
-      <div className="navbar    bg-gradient-to-r from-primary via-secondary  ease-in-out duration-200   z-20">
+      <div className="navbar  fixed  bg-gradient-to-r from-primary via-secondary  ease-in-out duration-200   z-20">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex="0" className="btn btn-ghost lg:hidden">
@@ -73,7 +74,7 @@ const Header = () => {
               className=" border-2 px-2 rounded-3xl  font-semibold text-accent hover:text-primary ease-in duration-200 cursor-pointer
            shadow-sm"
             >
-              {user.displayName}
+              {user?.displayName}
             </span>
           )}
         </div>

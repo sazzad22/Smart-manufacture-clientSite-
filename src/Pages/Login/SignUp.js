@@ -1,43 +1,51 @@
-import React from 'react';
-import { useCreateUserWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import auth from '../../firebase.init';
-import Loading from '../Shared/Loading';
+import React from "react";
+import {
+  useCreateUserWithEmailAndPassword,
+  useSignInWithGoogle,
+  useUpdateProfile,
+} from "react-firebase-hooks/auth";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import auth from "../../firebase.init";
+import Loading from "../Shared/Loading";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
-    const [createUserWithEmailAndPassword, user, loading, error] =
+  const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
-    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-    const {
-        register,
-        formState: { errors },
-        handleSubmit,
-      } = useForm();
-    const navigate = useNavigate();
+  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+  const [updateProfile, updating, uError] = useUpdateProfile(auth);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const navigate = useNavigate();
 
-    let signUpError;
-    if (loading || gLoading) {
-        return <Loading></Loading>;
-      }
+  let signUpError;
+  if (loading || gLoading) {
+    return <Loading></Loading>;
+  }
 
-    if (error || gError ) {
-        signUpError = (
-          <p>
-                <small>{error?.message || gError?.message}</small>
-          </p>
-        );
-    }
-    if (user || gUser) {
-        console.log(user,gUser);
-    }
-    
-    const onSubmit = async (data) => {
-        await createUserWithEmailAndPassword(data.email, data.password);
-        
-      };
-    return (
-        <div className="flex items-center min-h-screen justify-center pt-20">
+  if (error || gError) {
+    signUpError = (
+      <p>
+        <small>{error?.message || gError?.message}</small>
+      </p>
+    );
+  }
+  if (user || gUser) {
+    console.log(user, gUser);
+    toast("Thanks for signing up");
+    navigate('/login');
+  }
+
+  const onSubmit = async (data) => {
+    await createUserWithEmailAndPassword(data.email, data.password);
+    await updateProfile({ displayName: data.name });
+  };
+  return (
+    <div className="flex items-center min-h-screen justify-center pt-20">
       <div className="card w-96 bg-base-100 shadow-2xl ">
         <div className="card-body">
           <h2 className="text-center font-bold text-2xl text-accent ">
@@ -45,7 +53,7 @@ const SignUp = () => {
           </h2>
           {/* form */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Email input */}
+            {/* Name input */}
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Name</span>
@@ -166,7 +174,7 @@ const SignUp = () => {
         </div>
       </div>
     </div>
-    );
+  );
 };
 
 export default SignUp;
