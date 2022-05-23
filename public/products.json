@@ -1,0 +1,63 @@
+[
+    {
+        
+        "name": "Keyboard",
+        "price": "40",
+        "description": "We manufacture mechanical and membrane keyboard . Our products has large range of scale and quality.",
+        "img": "https://i.ibb.co/88bWRwY/keyboard.jpg",
+        "minOrder": 50,
+        "available": 200
+
+    },
+    {
+        
+        "name": "Hard Disk",
+        "price": "100",
+        "description": "We have the best hard disks . We can provide hard disks in a good price range",
+        "img": "https://i.ibb.co/RpqyzGq/hard-disk.jpg",
+        "minOrder": 40,
+        "available": 100
+
+    },
+    {
+        
+        "name": "Graphics Cards",
+        "price": "300",
+        "description": "In manufacturing graphics card we are one of the best in the vecinity.We also provide the products on time.",
+        "img": "https://i.ibb.co/sKkNxNx/gpu.jpg",
+        "minOrder": 50,
+        "available": 150
+
+    },
+    {
+        
+        "name": "Mouse",
+        "price": "30",
+        "description": "We manufacture office and gaming mouse. Our products are of very high quality.Also has great reputation.",
+        "img": "https://i.ibb.co/9vtdqfF/mouse.jpg",
+        "minOrder": 100,
+        "available": 500
+
+    },
+    {
+        
+        "name": "Computer Ram",
+        "price": "60",
+        "description": "We provide great gaming rams. Our rams are of high performance.We also take care of the shipments.",
+        "img": "https://i.ibb.co/7vR3YXx/ram.jpg",
+        "minOrder": 70,
+        "available": 1000
+
+    },
+    {
+        
+        "name": "Desktop Processor",
+        "price": "300",
+        "description": "We manufacture high performing processors.For large businesses you can order high quality processors and at a low price",
+        "img": "https://i.ibb.co/sg6t8hh/intel.jpg",
+        "minOrder": 50,
+        "available": 200
+
+    }
+    
+]

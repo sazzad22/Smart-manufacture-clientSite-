@@ -62,7 +62,7 @@ const Header = () => {
               {menuItem}
             </ul>
           </div>
-          <Link to={"/home"} className="font-semibold px-10 normal-case text-4xl text-white">
+          <Link to={"/home"} className="font-semibold px-5 lg:px-10 normal-case text-2xl lg:text-4xl text-white">
             Smart Manufacture
           </Link>
         </div>
