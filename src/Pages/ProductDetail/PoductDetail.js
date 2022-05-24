@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useParams } from "react-router-dom";
+import auth from "../../firebase.init";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const stockRef = useRef("");
+  const phoneRef=useRef('')
+  const [user] = useAuthState(auth);
 
   const [inventory, setInventory] = useState({});
 
@@ -12,7 +16,7 @@ const ProductDetail = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => setInventory(data));
-  }, [inventory,id]);
+  }, [inventory, id]);
 
   const handleReduceQuantity = () => {
     let quantity = inventory.quantity;
@@ -33,25 +37,36 @@ const ProductDetail = () => {
       });
   };
 
-  //add to stock
-  const handleStock = (event) => {
+  //add to Order
+  const handleOrder = (event) => {
     event.preventDefault();
-    const newStockedItem = parseInt(stockRef.current.value);
-    let quantity = inventory.quantity + newStockedItem;
-    const updatedInventory = { quantity };
-    fetch(`  http://localhost:5000/product/${id}`, {
-      method: "PUT",
+    const quantity = parseInt(stockRef.current.value);
+    const phone = parseInt(phoneRef.current.value);
+
+    const order = {
+      name: user?.displayName,
+      email: user?.email,
+      phone: phone,
+      product: inventory.name,
+      quantity: quantity,
+
+    }
+    console.log(order);
+    
+    fetch(`  http://localhost:5000/order`, {
+      method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(updatedInventory),
+      body: JSON.stringify(order),
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("success", data);
+        console.log("order", data);
       });
     event.target.reset();
   };
+
   return (
     <div>
       <div className="grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 px-5 md:px-10 lg:px-32 py-32 rounded-md shadow-2xl">
@@ -76,26 +91,27 @@ const ProductDetail = () => {
           </p>
 
           <p className="text-gray-700 font font-medium">
-            Seller:{" "}
+            Description:{" "}
             <span className="text-gray-800 font-mono font-semibold">
-              {inventory.seller}
+              {inventory.description}
             </span>{" "}
           </p>
-          <p className="text-gray-700 font font-medium">
-            Catagory:{" "}
-            <span className="text-gray-800 font-mono font-semibold">
-              {" "}
-              {inventory.catagory}
-            </span>
-          </p>
+
           <p className="text-gray-700 font font-medium">
             Available: <span className="text-gray-800">Yes</span>{" "}
           </p>
           <p className="text-gray-700 text-lg my-3 font-medium">
-            Quantity:{" "}
+            Minimum Order:{" "}
             <span className="text-gray-800 font-mono font-semibold underline">
               {" "}
-              {inventory.quantity}
+              {inventory.minOrder}
+            </span>
+          </p>
+          <p className="text-gray-700 text-lg my-3 font-medium">
+            Available quantity:{" "}
+            <span className="text-gray-800 font-mono font-semibold underline">
+              {" "}
+              {inventory.available}
             </span>
           </p>
           <button
@@ -104,25 +120,64 @@ const ProductDetail = () => {
           >
             Delivered
           </button>
-          <form onSubmit={handleStock}>
+          {/* Order Input */}
+          <form onSubmit={handleOrder}>
+            {/* Name */}
+            <label class="label">
+              <span class="label-text">Name:</span>
+              
+            </label>
             <input
-              className="rounded-md "
+              type="text"
+              name="name"
+              disabled
+              value={user?.displayName || ""}
+              className="input input-bordered w-full max-w-xs"
+            />
+            {/* Email */}
+            <label class="label">
+              <span class="label-text">Email:</span>
+              
+            </label>
+            <input
+              type="email"
+              name="email"
+              disabled
+              value={user?.email || ""}
+              className="input input-bordered w-full max-w-xs"
+            />
+            {/* phone */}
+            <label class="label">
+              <span class="label-text">Phone:</span>
+              
+            </label>
+            <input
+              type="text"
+              name="phone"
+              placeholder="Phone Number"
+              className="input input-bordered w-full max-w-xs"
+              ref={phoneRef}
+            />
+            <label class="label">
+              <span class="label-text">Quantity:</span>
+              
+            </label>
+            <input
+              className="input input-bordered w-full max-w-xs "
               type="text"
               name="text"
-              placeholder="Add quantity to restock"
+              placeholder="Add quantity "
               id="quantity"
               ref={stockRef}
             />
-            <button className="rounded-lg shadow-md bg-sky-500 px-4 py-3 text-white font-medium hover:shadow-2xl m-7 hover:bg-sky-400">
-              Add to Stock
-            </button>
+            {/* button */}
+            <input
+              type="submit"
+              value="Place Order"
+              className="btn btn-primary my-5 w-full max-w-xs"
+            />
           </form>
-          <Link
-            className="rounded-lg shadow-md bg-sky-500 px-4 py-3 text-white font-medium hover:shadow-2xl m-7 hover:bg-sky-400"
-            to={"/manageinventory"}
-          >
-            Manage Inventories
-          </Link>
+          
         </div>
       </div>
     </div>

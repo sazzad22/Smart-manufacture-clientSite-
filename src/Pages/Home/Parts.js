@@ -13,7 +13,7 @@ const Parts = () => {
     }
 
     return (
-        <div className='mb-20'
+        <div id='computerparts' className='mb-20'
         style={{
             backgroundImage: `url(${bg})`,
               backgroundRepeat: "repeat-y",
