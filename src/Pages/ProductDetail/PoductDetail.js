@@ -6,14 +6,19 @@ import auth from "../../firebase.init";
 const ProductDetail = () => {
   const { id } = useParams();
   const stockRef = useRef("");
-  const phoneRef=useRef('')
+  const phoneRef = useRef("");
   const [user] = useAuthState(auth);
 
   const [inventory, setInventory] = useState({});
 
   useEffect(() => {
     const url = ` http://localhost:5000/product/${id}`;
-    fetch(url)
+    fetch(url, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setInventory(data));
   }, [inventory, id]);
@@ -49,10 +54,9 @@ const ProductDetail = () => {
       phone: phone,
       product: inventory.name,
       quantity: quantity,
-
-    }
+    };
     console.log(order);
-    
+
     fetch(`  http://localhost:5000/order`, {
       method: "POST",
       headers: {
@@ -125,7 +129,6 @@ const ProductDetail = () => {
             {/* Name */}
             <label class="label">
               <span class="label-text">Name:</span>
-              
             </label>
             <input
               type="text"
@@ -137,7 +140,6 @@ const ProductDetail = () => {
             {/* Email */}
             <label class="label">
               <span class="label-text">Email:</span>
-              
             </label>
             <input
               type="email"
@@ -149,7 +151,6 @@ const ProductDetail = () => {
             {/* phone */}
             <label class="label">
               <span class="label-text">Phone:</span>
-              
             </label>
             <input
               type="text"
@@ -160,7 +161,6 @@ const ProductDetail = () => {
             />
             <label class="label">
               <span class="label-text">Quantity:</span>
-              
             </label>
             <input
               className="input input-bordered w-full max-w-xs "
@@ -177,7 +177,6 @@ const ProductDetail = () => {
               className="btn btn-primary my-5 w-full max-w-xs"
             />
           </form>
-          
         </div>
       </div>
     </div>
