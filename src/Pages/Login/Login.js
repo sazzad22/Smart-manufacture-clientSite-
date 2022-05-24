@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
 import bg from '../../images/background.jpg';
+import useToken from '../../hooks/useToken';
 
 
 const Login = () => {
@@ -19,12 +20,14 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
+  const [token] = useToken(user || gUser);
+
 
   let signInError;
 //   const [token] = useToken(user || gUser);
 
   useEffect(() => {
-    if (user|| gUser) {
+    if (token) {
       navigate(from, { replace: true });
     }
   },[navigate,from,user,gUser])

@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import Loading from "../Shared/Loading";
 import { toast } from "react-toastify";
+import useToken from "../../hooks/useToken";
 
 const SignUp = () => {
   const [createUserWithEmailAndPassword, user, loading, error] =
@@ -21,6 +22,8 @@ const SignUp = () => {
     handleSubmit,
   } = useForm();
   const navigate = useNavigate();
+  const [token] = useToken(user || gUser);
+
 
   let signUpError;
   if (loading || gLoading) {
@@ -34,7 +37,7 @@ const SignUp = () => {
       </p>
     );
   }
-  if (user || gUser) {
+  if (token) {
     console.log(user, gUser);
     toast("Thanks for signing up");
     navigate('/login');
