@@ -11,7 +11,7 @@ const Dashboard = () => {
         <h2 className="lg:text-5xl text-3xl  font-bold text-neutral text-center mt-5">
           Welcome to your Dashboard
         </h2>
-        <Outlet></Outlet>
+        <div ><Outlet></Outlet></div>
       </div>
       <div class="drawer-side lg:mt-10 lg:ml-5">
         <label for="dashboard-sidebar" class="drawer-overlay"></label>

@@ -57,7 +57,7 @@ const Login = () => {
               backgroundBlendMode:'lighten'
           }}
         >
-      <div className="card w-96 bg-base-100 shadow-2xl ">
+      <div className="card lg:w-96 w-full bg-base-100 shadow-2xl ">
         <div className="card-body">
           <h2 className="text-center font-bold text-2xl text-accent ">Login</h2>
           {/* form */}
