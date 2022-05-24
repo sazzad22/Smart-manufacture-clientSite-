@@ -12,14 +12,14 @@ const ProductDetail = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => setInventory(data));
-  }, [inventory]);
+  }, [inventory,id]);
 
   const handleReduceQuantity = () => {
     let quantity = inventory.quantity;
     quantity -= 1;
 
     const updatedInventory = { quantity };
-    const url = ` https://hidden-citadel-35575.herokuapp.com/inventory/${id}`;
+    const url = `  http://localhost:5000/product/${id}`;
     fetch(url, {
       method: "PUT",
       headers: {
@@ -39,7 +39,7 @@ const ProductDetail = () => {
     const newStockedItem = parseInt(stockRef.current.value);
     let quantity = inventory.quantity + newStockedItem;
     const updatedInventory = { quantity };
-    fetch(` https://hidden-citadel-35575.herokuapp.com/inventory/${id}`, {
+    fetch(`  http://localhost:5000/product/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

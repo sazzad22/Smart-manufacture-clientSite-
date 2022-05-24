@@ -16,9 +16,11 @@ const Header = () => {
             <Link to={"/home"}>Home</Link>
           </li>
           
+        {user && <>
           <li>
             <Link to={"dashboard"}>Dashboard</Link>
           </li>
+        </>}
           
           <li>
             <Link to={"blogs"}>Blogs</Link>
@@ -37,7 +39,7 @@ const Header = () => {
       );
     return (
         <div>
-      <div className="navbar  fixed  bg-gradient-to-r from-primary via-secondary  ease-in-out duration-200   z-20">
+      <div className="navbar   fixed  bg-gradient-to-r from-primary via-secondary  to-white   ease-in-out duration-200   z-20">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex="0" className="btn btn-ghost lg:hidden">

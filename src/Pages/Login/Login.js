@@ -25,10 +25,9 @@ const Login = () => {
 
   useEffect(() => {
     if (user|| gUser) {
-      console.log(gUser||user);
       navigate(from, { replace: true });
     }
-  },[navigate,from])
+  },[navigate,from,user,gUser])
   if (loading || gLoading) {
     return <Loading></Loading>;
   }
