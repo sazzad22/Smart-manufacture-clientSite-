@@ -2,14 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useParams } from "react-router-dom";
 import auth from "../../firebase.init";
+import { toast } from "react-toastify";
+
 
 const ProductDetail = () => {
   const { id } = useParams();
   const stockRef = useRef("");
   const phoneRef = useRef("");
+  const addressRef = useRef("");
   const [user] = useAuthState(auth);
 
   const [inventory, setInventory] = useState({});
+  const [legits,setLegits]=useState(true)
 
   useEffect(() => {
     const url = ` http://localhost:5000/product/${id}`;
@@ -23,52 +27,72 @@ const ProductDetail = () => {
       .then((data) => setInventory(data));
   }, [inventory, id]);
 
-  const handleReduceQuantity = () => {
-    let quantity = inventory.quantity;
-    quantity -= 1;
+  // const handleReduceQuantity = () => {
+  //   let quantity = inventory.quantity;
+  //   quantity -= 1;
 
-    const updatedInventory = { quantity };
-    const url = `  http://localhost:5000/product/${id}`;
-    fetch(url, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(updatedInventory),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("success", data);
-      });
-  };
+  //   const updatedInventory = { quantity };
+  //   const url = `  http://localhost:5000/product/${id}`;
+  //   fetch(url, {
+  //     method: "PUT",
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //     body: JSON.stringify(updatedInventory),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log("success", data);
+  //     });
+  // };
+  let quantityError;
+
+  const handleInput = e => {
+    const quantity = parseInt(stockRef.current.value);
+    const phone = parseInt(phoneRef.current.value);
+
+    const legit = quantity > inventory.minOrder && quantity < inventory.available;
+    setLegits(legit)
+    
+    
+  }
+  if (!legits) {
+    quantityError = (<p className="text-red-500">"Add within available and minimum order quantity"</p>)
+    
+  }
 
   //add to Order
   const handleOrder = (event) => {
     event.preventDefault();
     const quantity = parseInt(stockRef.current.value);
     const phone = parseInt(phoneRef.current.value);
-
-    const order = {
-      name: user?.displayName,
-      email: user?.email,
-      phone: phone,
-      product: inventory.name,
-      quantity: quantity,
-    };
-    console.log(order);
-
-    fetch(`  http://localhost:5000/order`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(order),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("order", data);
-      });
-    event.target.reset();
+    const address = addressRef.current.value;
+    
+    
+      const order = {
+        name: user?.displayName,
+        email: user?.email,
+        phone: phone,
+        product: inventory.name,
+        quantity: quantity,
+        address:address,
+      };
+      console.log(order);
+  
+      fetch(`  http://localhost:5000/order`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(order),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("order", data);
+          toast.success('Order Booked')
+        });
+      event.target.reset();
+       
   };
 
   return (
@@ -118,14 +142,10 @@ const ProductDetail = () => {
               {inventory.available}
             </span>
           </p>
-          <button
-            className="rounded-lg shadow-md bg-sky-500 px-4 py-3 text-white font-medium hover:shadow-2xl hover:bg-sky-400 my-2"
-            onClick={handleReduceQuantity}
-          >
-            Delivered
-          </button>
+          
+           
           {/* Order Input */}
-          <form onSubmit={handleOrder}>
+          <form onChange={handleInput}>
             {/* Name */}
             <label class="label">
               <span class="label-text">Name:</span>
@@ -148,17 +168,8 @@ const ProductDetail = () => {
               value={user?.email || ""}
               className="input input-bordered w-full max-w-xs"
             />
-            {/* phone */}
-            <label class="label">
-              <span class="label-text">Phone:</span>
-            </label>
-            <input
-              type="text"
-              name="phone"
-              placeholder="Phone Number"
-              className="input input-bordered w-full max-w-xs"
-              ref={phoneRef}
-            />
+
+            {/* quantity */}
             <label class="label">
               <span class="label-text">Quantity:</span>
             </label>
@@ -170,12 +181,49 @@ const ProductDetail = () => {
               id="quantity"
               ref={stockRef}
             />
-            {/* button */}
+
+            {/* phone */}
+            <label class="label">
+              <span class="label-text">Phone:</span>
+            </label>
             <input
+              type="text"
+              name="phone"
+              placeholder="Phone Number"
+              className="input input-bordered w-full max-w-xs"
+              ref={phoneRef}
+            />
+
+            {/* Address */}
+            <label class="label">
+              <span class="label-text">Address:</span>
+            </label>
+            <input
+              className="input input-bordered w-full max-w-xs "
+              type="text"
+              name="text"
+              placeholder="Address "
+              id="address"
+              ref={addressRef}
+            />
+            
+            {/* button */}
+            
+            {quantityError}
+            {
+              legits ? <input
               type="submit"
               value="Place Order"
-              className="btn btn-primary my-5 w-full max-w-xs"
+                className="btn btn-primary my-5 w-full max-w-xs"
+                onClick={handleOrder}
+              /> :
+              <input
+              type="submit"
+              value="Place Order"
+                  className="btn btn-primary my-5 w-full max-w-xs"
+                  disabled
             />
+            }
           </form>
         </div>
       </div>

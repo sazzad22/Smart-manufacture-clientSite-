@@ -52,8 +52,10 @@ const MyOrder = () => {
             <th></th>
             <th>User</th>
             <th>Product</th>
-            <th>Quantity</th>
+              <th>Quantity</th>
+              <th>Address</th>
             <th>Payment</th>
+            
             <th>Cancel</th>
           </tr>
         </thead>
@@ -61,9 +63,10 @@ const MyOrder = () => {
           {orders.map((a, index ) => (
             <tr key={a._id}>
               <th>{index + 1}</th>
-              <td>{a.name}</td>
-              <td>{a.product}</td>
-              <td>{a.quantity}</td>
+              <td>{a?.name}</td>
+              <td>{a?.product}</td>
+              <td>{a?.quantity}</td>
+              <td>{a?.address}</td>
               <td><button className='btn btn-sm'>Pay</button></td>
               <td><button className='btn btn-sm btn-error'>Cancel</button></td>
             </tr>

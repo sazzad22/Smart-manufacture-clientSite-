@@ -6,6 +6,7 @@ import { signOut } from 'firebase/auth';
 
 const Header = () => {
   const [user] = useAuthState(auth);
+  console.log(user);
     const handleSignOut = () => {
       signOut(auth);
     localStorage.removeItem('accessToken');
@@ -82,7 +83,7 @@ const Header = () => {
           )}
         </div>
         <div className="navbar-end lg:hidden">
-        <label tabIndex="1" for="my-drawer-2" className="btn btn-ghost lg:hidden">
+        <label tabIndex="1" for="dashboard-sidebar" className="btn btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-4"

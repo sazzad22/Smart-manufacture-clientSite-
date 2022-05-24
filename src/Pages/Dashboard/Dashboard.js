@@ -13,7 +13,7 @@ const Dashboard = () => {
         </h2>
         <Outlet></Outlet>
       </div>
-      <div class="drawer-side mt-10 ml-5">
+      <div class="drawer-side lg:mt-10 lg:ml-5">
         <label for="dashboard-sidebar" class="drawer-overlay"></label>
         <ul class="menu p-4 overflow-y-auto w-48 bg-base-100 text-base-content">
           {/* <!-- Sidebar content here --> */}
