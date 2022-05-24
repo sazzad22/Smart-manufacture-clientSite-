@@ -1,17 +1,24 @@
-import React from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { Link, Outlet } from 'react-router-dom';
+import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Link, Outlet } from "react-router-dom";
+import useAdmin from "../../hooks/useAdmin";
+import auth from "../../firebase.init";
 
 const Dashboard = () => {
-    
-    return (
-        <div class="drawer drawer-mobile lg:pt-20 pt-20 ">
+  const [user] = useAuthState(auth);
+  const [admin] = useAdmin(user);
+  console.log(admin);
+
+  return (
+    <div class="drawer drawer-mobile lg:pt-20 pt-20 ">
       <input id="dashboard-sidebar" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content">
         <h2 className="lg:text-5xl text-3xl  font-bold text-neutral text-center mt-5">
           Welcome to your Dashboard
         </h2>
-        <div ><Outlet></Outlet></div>
+        <div>
+          <Outlet></Outlet>
+        </div>
       </div>
       <div class="drawer-side lg:mt-10 lg:ml-5">
         <label for="dashboard-sidebar" class="drawer-overlay"></label>
@@ -26,15 +33,16 @@ const Dashboard = () => {
           <li>
             <Link to="/dashboard/myprofile">My Profile</Link>
           </li>
-          {/* {admin && (
+
+          {admin.admin && (
             <li>
               <Link to="/dashboard/users">All Users</Link>
             </li>
-          )} */}
+          )}
         </ul>
       </div>
     </div>
-    );
+  );
 };
 
 export default Dashboard;

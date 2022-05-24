@@ -21,6 +21,7 @@ const Login = () => {
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
   const [token] = useToken(user || gUser);
+  
 
 
   let signInError;
@@ -30,7 +31,7 @@ const Login = () => {
     if (token) {
       navigate(from, { replace: true });
     }
-  },[navigate,from,user,gUser])
+  },[navigate,from,user,gUser,token])
   if (loading || gLoading) {
     return <Loading></Loading>;
   }

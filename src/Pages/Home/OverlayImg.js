@@ -9,7 +9,8 @@ const OverlayImg = () => {
         style={{
             backgroundImage: `url(${OverlayImage})`,
             backgroundSize: 'cover',
-            backgroundBlendMode:'lighten'
+          backgroundBlendMode: 'lighten',
+          backgroundAttachment: 'fixed'
         }}
       >
         <div class=" hero-overlay bg-opacity-30"></div>

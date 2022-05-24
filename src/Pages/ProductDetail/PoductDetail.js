@@ -105,12 +105,7 @@ const ProductDetail = () => {
           <h3 className="font-bold text-4xl  lg:text-5xl text-gray-700 mb-2 ">
             {inventory.name}
           </h3>
-          <p className="text-gray-700 font font-medium">
-            Description:{" "}
-            <span className="text-gray-800 font-mono font-semibold">
-              {inventory.shortDescription}
-            </span>{" "}
-          </p>
+          
           <p className="text-gray-700 font font-medium">
             Price: ${" "}
             <span className="text-gray-800 font-mono font-semibold">

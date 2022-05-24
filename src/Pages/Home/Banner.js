@@ -10,10 +10,11 @@ const Banner = () => {
         <main className=" mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16  lg:px-8 xl:mt-28">
           <div className="sm:text-center ">
             <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-              <span className="block xl:inline">Warehouse Manager to enrich your</span>{" "}
+              <span className="block xl:inline">Smart Manufacturer for your</span>{" "}
               <span className="block text-sky-500 xl:inline">
-                online business
-              </span>
+                 businesses ,
+                  </span>
+                  at your doorstep
             </h1>
             <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
             We help online businessmen and retailers get from shopping cart to customer with warehouse management, reduced shipping costs, seamless integrations, and a live, human customer support team.

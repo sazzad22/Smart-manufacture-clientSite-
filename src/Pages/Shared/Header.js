@@ -6,7 +6,7 @@ import { signOut } from 'firebase/auth';
 
 const Header = () => {
   const [user] = useAuthState(auth);
-  console.log(user);
+  
     const handleSignOut = () => {
       signOut(auth);
     localStorage.removeItem('accessToken');
@@ -22,6 +22,7 @@ const Header = () => {
           <li>
             <Link to={"dashboard"}>Dashboard</Link>
           </li>
+          
         </>}
           
           <li>

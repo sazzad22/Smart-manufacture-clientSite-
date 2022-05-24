@@ -1,34 +1,18 @@
 import React from 'react';
 import Review from './Review';
 import people1 from '../../images/user.png';
+import Loading from '../Shared/Loading';
+import { useQuery } from 'react-query';
 
 
 const Reviews = () => {
-    const reviews = [
-        {
-            _id:1,
-            name: 'Winson Herry',
-            review: '',
-            location: 'california',
-            img: people1
-        },
-        {
-            _id:2,
-            name: 'Haraka shobol',
-            review: '',
-            location: 'california',
-            img: people1
-        },
-        {
-            _id:3,
-            name: 'Binito Jerry',
-            review: '',
-            location: 'california',
-            img: people1
-        },
-    ];
+    const { data: reviews, isLoading, refetch } = useQuery(['reviews'], () => fetch('http://localhost:5000/review').then(res => res.json()))
+    if (isLoading) {
+        return <Loading></Loading>
+    }
+    
     return (
-        <section className='my-40 ' >
+        <section id='review' className='my-40 ' >
             <div className='flex justify-center'>
                 <div>
                     <h4 className='text-xl lg:text-4xl text-primary font-bold text-center' >Client Reviews</h4>
