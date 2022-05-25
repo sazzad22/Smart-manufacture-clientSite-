@@ -1,206 +1,144 @@
-import { async } from '@firebase/util';
-import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
-import auth from '../../firebase.init';
-import Loading from '../Shared/Loading';
+import { async } from "@firebase/util";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useForm } from "react-hook-form";
+import { useQuery } from "react-query";
+import { toast } from "react-toastify";
+import auth from "../../firebase.init";
+import Loading from "../Shared/Loading";
 
 const MyProfile = () => {
-    const [user] = useAuthState(auth);
-    const email = user.email;
+  const [updated,setUpdated]=useState(false)
+  const [user] = useAuthState(auth);
+  const email = user.email;
+
+  const [client, setClient] = useState({});
+  useEffect(() => {
+    fetch(`http://localhost:5000/user/${email}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setClient(data));
     
+  }, [email,updated,client]);
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
+  const onSubmit = async (data) => {
     
-    const [client, setClient] = useState({});
-    useEffect(() => {
-        fetch(`http://localhost:5000/user/${email}`,
-        {
-            method: "GET",
-            headers: {
-              "content-type": "application/json",
-              authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-           
-          }
-        ).then(res => res.json()).then(data => setClient(data))
-        console.log(client);
 
-    },[email])
+    const updatedClient = {
+      education: data.education,
+      location: data.location,
+      phone: data.phone,
+      profileLink: data.profileLink,
+      };
+      console.log(updatedClient);
+    //todo Update user profile
+    fetch(`http://localhost:5000/user/${email}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(updatedClient),
+    })
+    .then(res => res.json())
+        .then(data => {
+        console.log(data);
+            if (data.result.modifiedCount > 0) {
+            setUpdated(true)
+            
+                toast.success(`Successfully updated profile`);
+                
+        }
 
-
-    const {
-        register,
-        formState: { errors },
-        handleSubmit,
-        reset,
-    } = useForm();
-    const onSubmit = async (data) => {
-        
-    }
-    return (
-        <div className="flex  justify-center">
+    });
+  };
+  return (
+    <div className="flex  justify-center">
       <div className="w-1/2 my-10 ">
-        <h2 className="text-4xl font-semibold text-accent ">Add A Product</h2>
-        <form  onSubmit={handleSubmit(onSubmit)}>
-          {/*  name input */}
+        <h2 className="text-4xl font-semibold text-accent ">
+          User Information
+        </h2>
+        <p>Name:{client.name}</p>
+        <p>Email:{client.email}</p>
+              {
+                  updated ? <>
+                      <p>Name:{client.education}</p>
+        <p>Email:{client.location}</p>
+        <p>Email:{client.phone}</p>
+        <p>Email:{client.profileLink}</p>
+                  </> :<></>
+        }
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/*  Education input */}
           <div className="form-control w-full max-w-xs">
             <label className="label">
-              <span className="label-text">Name</span>
+              <span className="label-text">Education</span>
             </label>
             <input
               type="text"
               placeholder="Product Name"
               className="input  input-bordered input-accent  w-full max-w-xs"
-              {...register("name", {
-                required: {
-                  value: true,
-                  message: "Name is Required",
-                },
-              })}
+              {...register("education")}
             />
-            <label className="label">
-              {errors.name?.type === "required" && (
-                <span className="text-red-500 label-text-alt">
-                  {errors.name?.message}
-                </span>
-              )}
-              
-            </label>
           </div>
-          {/* Price input */}
+          {/*  Loacation input */}
           <div className="form-control w-full max-w-xs">
             <label className="label">
-              <span className="label-text">Price</span>
+              <span className="label-text">Location</span>
             </label>
             <input
               type="text"
-              placeholder="Price per product"
+              placeholder="Your Address"
               className="input  input-bordered input-accent  w-full max-w-xs"
-              {...register("price", {
-                required: {
-                  value: true,
-                  message: "Price is Required",
-                },
-                
-              })}
+              {...register("location")}
             />
-            <label className="label">
-              {errors.price?.type === "required" && (
-                <span className="text-red-500 label-text-alt">
-                  {errors.price?.message}
-                </span>
-              )}
-              
-            </label>
           </div>
-          {/* Description */}
+          {/*  phone input */}
           <div className="form-control w-full max-w-xs">
             <label className="label">
-              <span className="label-text">Description</span>
+              <span className="label-text">Phone</span>
             </label>
             <input
               type="text"
-              placeholder="Product description"
+              placeholder="Phone Number"
               className="input  input-bordered input-accent  w-full max-w-xs"
-              {...register("description", {
-                required: {
-                  value: true,
-                  message: "A description is Required",
-                },
-              })}
+              {...register("phone")}
             />
-            <label className="label">
-              {errors.email?.type === "required" && (
-                <span className="text-red-500 label-text-alt">
-                  {errors.email?.message}
-                </span>
-              )}
-            </label>
           </div>
-          {/* Photo  */}
+          {/*  Linkin profile input */}
           <div className="form-control w-full max-w-xs">
             <label className="label">
-              <span className="label-text">Product Image Link</span>
+              <span className="label-text">LinkedIn profile Link</span>
             </label>
             <input
-              placeholder="Image Link"
               type="text"
+              placeholder="LinkedIn profile Ling"
               className="input  input-bordered input-accent  w-full max-w-xs"
-              {...register("image", {
-                required: {
-                  value: true,
-                  message: "Image Link is Required",
-                },
-              })}
+              {...register("profileLink")}
             />
-            <label className="label">
-              {errors.name?.type === "required" && (
-                <span className="text-red-500 label-text-alt">
-                  {errors.image?.message}
-                </span>
-              )}
-            </label>
-          </div>
-          {/* Min order */}
-          <div className="form-control w-full max-w-xs">
-            <label className="label">
-              <span className="label-text">Minimum Order</span>
-            </label>
-            <input
-              type="number"
-              placeholder="Minimum Order"
-              className="input  input-bordered input-accent  w-full max-w-xs"
-              {...register("minOrder", {
-                required: {
-                  value: true,
-                  message: "Minimum count is Required",
-                },
-              })}
-            />
-            <label className="label">
-              {errors.minOrder?.type === "required" && (
-                <span className="text-red-500 label-text-alt">
-                  {errors.minOrder?.message}
-                </span>
-              )}
-            </label>
-          </div>
-
-          {/* available */}
-          <div className="form-control w-full max-w-xs">
-            <label className="label">
-              <span className="label-text">Available Products</span>
-            </label>
-            <input
-              type="number"
-              placeholder="Available Product count"
-              className="input  input-bordered input-accent  w-full max-w-xs"
-              {...register("available", {
-                required: {
-                  value: true,
-                  message: "available product count is Required",
-                },
-              })}
-            />
-            <label className="label">
-              {errors.available?.type === "required" && (
-                <span className="text-red-500 label-text-alt">
-                  {errors.available?.message}
-                </span>
-              )}
-            </label>
           </div>
 
           {/* Add Button */}
           <input
             className="btn btn-outline btn-primary w-full max-w-xs shadow-lg  hover:drop-shadow-xl ease-in"
-            value="Add Product"
+            value="Submit"
             type="submit"
           />
         </form>
       </div>
     </div>
-    );
+  );
 };
 
 export default MyProfile;
