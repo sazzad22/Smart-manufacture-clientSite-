@@ -5,8 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
+import DeleteOrderModal from './DeleteOrderModal';
 
 const MyOrder = () => {
+  const [deletingOrder, setDeletingOrder] = useState(null);
+
     const [orders, setOrders] = useState([]);
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
@@ -45,19 +48,7 @@ const MyOrder = () => {
       </div>
     );
   }
-  const handleDelete = (id) => {
-    fetch(`http://localhost:5000/order/${id}`, {
-      method: "DELETE",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        toast.success("Order Deleted!");
-      });
-  };
+  
     return (
         <div class="overflow-x-auto">
       <table class="table w-full">
@@ -82,11 +73,18 @@ const MyOrder = () => {
               <td>{a?.quantity}</td>
               <td>{a?.address}</td>
               <td><button className='btn btn-sm'>Pay</button></td>
-              <td><button onClick={()=>handleDelete(a._id)} className='btn btn-sm btn-error'>Cancel</button></td>
+              <td><label for='delete-order-modal' onClick={()=>setDeletingOrder(a)} className="btn btn-sm btn-error">Delete</label></td>
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+        {deletingOrder && (
+        <DeleteOrderModal
+          deletingDoctor={deletingOrder}
+          
+          setDeletingDoctor={setDeletingOrder}
+        ></DeleteOrderModal>
+      )}
     </div>
     );
 };

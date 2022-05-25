@@ -8,11 +8,12 @@ import auth from "../../firebase.init";
 import Loading from "../Shared/Loading";
 
 const MyProfile = () => {
-  const [updated,setUpdated]=useState(false)
+    const [client, setClient] = useState({});
+  const [updated, setUpdated] = useState(false);
   const [user] = useAuthState(auth);
   const email = user.email;
 
-  const [client, setClient] = useState({});
+  
   useEffect(() => {
     fetch(`http://localhost:5000/user/${email}`, {
       method: "GET",
@@ -23,8 +24,7 @@ const MyProfile = () => {
     })
       .then((res) => res.json())
       .then((data) => setClient(data));
-    
-  }, [email,updated,client]);
+  }, [email, updated, client]);
 
   const {
     register,
@@ -33,15 +33,13 @@ const MyProfile = () => {
     reset,
   } = useForm();
   const onSubmit = async (data) => {
-    
-
     const updatedClient = {
       education: data.education,
       location: data.location,
       phone: data.phone,
       profileLink: data.profileLink,
-      };
-      console.log(updatedClient);
+    };
+    console.log(updatedClient);
     //todo Update user profile
     fetch(`http://localhost:5000/user/${email}`, {
       method: "PUT",
@@ -51,35 +49,35 @@ const MyProfile = () => {
       },
       body: JSON.stringify(updatedClient),
     })
-    .then(res => res.json())
-        .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         console.log(data);
-            if (data.result.modifiedCount > 0) {
-            setUpdated(true)
-            
-                toast.success(`Successfully updated profile`);
-                
-        }
+        if (data.result.modifiedCount > 0) {
+          setUpdated(true);
 
-    });
+          toast.success(`Successfully updated profile`);
+        }
+      });
   };
   return (
-    <div className="flex  justify-center">
-      <div className="w-1/2 my-10 ">
-        <h2 className="text-4xl font-semibold text-accent ">
-          User Information
-        </h2>
-        <p>Name:{client.name}</p>
-        <p>Email:{client.email}</p>
-              {
-                  updated ? <>
-                      <p>Name:{client.education}</p>
-        <p>Email:{client.location}</p>
-        <p>Email:{client.phone}</p>
-        <p>Email:{client.profileLink}</p>
-                  </> :<></>
-        }
-        <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="flex  justify-center ">
+      <div className="w-full mb-20 lg:flex justify-center  ">
+        <div>
+          <h2 className="text-4xl font-semibold text-accent my-5 ">
+            User Information
+          </h2>
+          <p className="text-lg ">Name: <span className="font-mono text-accent hover:underline text-xl">{user.displayName}</span></p>
+          <p className="text-lg ">Email: <span className="font-mono text-accent hover:underline text-xl" >{client.email}</span></p>
+
+          <p className="text-lg ">Education: <span className="font-mono text-accent hover:underline text-xl" >{client.education}</span></p>
+          <p className="text-lg ">Location: <span className="font-mono text-accent hover:underline text-xl" >{client.location}</span></p>
+          <p className="text-lg ">Phone: <span className="font-mono text-accent hover:underline text-xl" >{client.phone}</span></p>
+          <p className="text-lg ">LinkedIn Link: <span className="font-mono text-accent hover:underline text-xl" >{client.profileLink}</span></p>
+        </div>
+              <form className="text-center lg:ml-20 " onSubmit={handleSubmit(onSubmit)}>
+              <h2 className="text-2xl font-semibold text-accent my-5 ">
+            Update
+          </h2>
           {/*  Education input */}
           <div className="form-control w-full max-w-xs">
             <label className="label">
@@ -87,7 +85,7 @@ const MyProfile = () => {
             </label>
             <input
               type="text"
-              placeholder="Product Name"
+              placeholder="Education"
               className="input  input-bordered input-accent  w-full max-w-xs"
               {...register("education")}
             />
@@ -131,7 +129,7 @@ const MyProfile = () => {
 
           {/* Add Button */}
           <input
-            className="btn btn-outline btn-primary w-full max-w-xs shadow-lg  hover:drop-shadow-xl ease-in"
+            className="btn  btn-primary w-full max-w-xs shadow-lg  hover:drop-shadow-xl ease-in my-5"
             value="Submit"
             type="submit"
           />
