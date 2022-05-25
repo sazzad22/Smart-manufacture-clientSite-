@@ -22,7 +22,7 @@ const Part = ({ product, refetch }) => {
               <p> <span className="font-semibold text-neutral">Minimum Order:</span>{minOrder}</p>
         <div class="card-actions justify-end">
           
-          <Link to={`/product/${_id}`} >Purchase</Link>
+          <Link className="btn btn-secondary shadow-xl text-blue-900" to={`/product/${_id}`} >Purchase</Link>
         </div>
       </div>
     </div>

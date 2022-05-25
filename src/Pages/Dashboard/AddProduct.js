@@ -15,27 +15,17 @@ const AddProduct = () => {
     
       
     
-      const imageStorageKey = "fc2e062670a7ceea15d576f8c2f69e32";
+      
     
       const onSubmit = async (data) => {
         console.log(data);
-        const image = data.image[0];
-        const formData = new FormData();
-        formData.append("image", image);
-        const url = `https://api.imgbb.com/1/upload?key=${imageStorageKey}`;
-        fetch(url, {
-          method: "POST",
-          body: formData,
-        })
-          .then((res) => res.json())
-          .then((result) => {
-            if (result.success) {
-              const img = result.data.url;
+
+
               const product = {
                 name: data.name,
                 price: data.price,
                 description: data.description,
-                  img: img,
+                  img: data.image,
                   minOrder: data.minOrder,
                   available: data.available,
                 
@@ -57,8 +47,8 @@ const AddProduct = () => {
                     reset();
                   }
                 });
-            }
-          });
+
+        
       };
     
       
@@ -145,15 +135,16 @@ const AddProduct = () => {
           {/* Photo  */}
           <div className="form-control w-full max-w-xs">
             <label className="label">
-              <span className="label-text">Product Image</span>
+              <span className="label-text">Product Image Link</span>
             </label>
             <input
-              type="file"
+              placeholder="Image Link"
+              type="text"
               className="input  input-bordered input-accent  w-full max-w-xs"
               {...register("image", {
                 required: {
                   value: true,
-                  message: "Image is Required",
+                  message: "Image Link is Required",
                 },
               })}
             />
@@ -197,7 +188,7 @@ const AddProduct = () => {
             </label>
             <input
               type="number"
-              placeholder="Price per product"
+              placeholder="Available Product count"
               className="input  input-bordered input-accent  w-full max-w-xs"
               {...register("available", {
                 required: {

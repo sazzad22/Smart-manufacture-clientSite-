@@ -7,7 +7,7 @@ import auth from "../../firebase.init";
 const Dashboard = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
-  console.log(admin);
+  
 
   return (
     <div class="drawer drawer-mobile lg:pt-20 pt-20 ">
@@ -28,7 +28,7 @@ const Dashboard = () => {
             admin.admin ? <></> :
               <>
                 <li>
-            <Link to="/dashboard">My Orders</Link>
+            <Link to="/dashboard/myorder">My Orders</Link>
           </li>
           <li>
             <Link to="/dashboard/addreview">Add Reviews</Link>
@@ -36,7 +36,7 @@ const Dashboard = () => {
             </>
           }
           <li>
-            <Link to="/dashboard/myprofile">My Profile</Link>
+            <Link to="/dashboard">My Profile</Link>
           </li>
 
           {admin.admin && (

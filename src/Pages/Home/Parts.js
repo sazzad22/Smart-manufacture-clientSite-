@@ -11,6 +11,8 @@ const Parts = () => {
     if (isLoading) {
         return <Loading></Loading>
     }
+const reversedProducts = [...products].reverse();
+    console.log(reversedProducts);
 
     return (
         <div id='computerparts' className='mb-20'
@@ -26,7 +28,7 @@ const Parts = () => {
 
             <div className='grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-1 justify-items-center my-20'>
             {
-                products.map(product => <Part
+                reversedProducts.map(product => <Part
                     key={product._id}
                     product={product}
                     refetch={refetch}
