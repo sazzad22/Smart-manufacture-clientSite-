@@ -2,6 +2,7 @@ import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
 
@@ -31,7 +32,7 @@ const MyOrder = () => {
         })
         .then((data) => setOrders(data));
     }
-  }, [user]);
+  }, [user,orders,navigate]);
     
 
   if (loading) {
@@ -44,6 +45,19 @@ const MyOrder = () => {
       </div>
     );
   }
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/order/${id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        toast.success("Order Deleted!");
+      });
+  };
     return (
         <div class="overflow-x-auto">
       <table class="table w-full">
@@ -68,7 +82,7 @@ const MyOrder = () => {
               <td>{a?.quantity}</td>
               <td>{a?.address}</td>
               <td><button className='btn btn-sm'>Pay</button></td>
-              <td><button className='btn btn-sm btn-error'>Cancel</button></td>
+              <td><button onClick={()=>handleDelete(a._id)} className='btn btn-sm btn-error'>Cancel</button></td>
             </tr>
           ))}
         </tbody>
