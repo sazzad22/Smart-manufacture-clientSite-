@@ -10,7 +10,6 @@ import OrderRow from "./OrderRow";
 
 const ManageOrder = () => {
   const [deletingOrder, setDeletingOrder] = useState(null);
-  
 
   const [orders, setOrders] = useState([]);
   const [user, loading, error] = useAuthState(auth);
@@ -18,7 +17,7 @@ const ManageOrder = () => {
 
   useEffect(() => {
     if (user) {
-      fetch(`http://localhost:5000/order`, {
+      fetch(`https://stark-spire-17042.herokuapp.com/order`, {
         method: "GET",
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -34,7 +33,7 @@ const ManageOrder = () => {
         })
         .then((data) => setOrders(data));
     }
-  }, [user,orders,navigate,]);
+  }, [user, orders, navigate]);
 
   if (loading) {
     return <Loading></Loading>;
@@ -47,33 +46,35 @@ const ManageOrder = () => {
     );
   }
 
-  
   return (
     <div class="overflow-x-auto">
       <table class="table w-full">
         <thead>
           <tr>
-            <th className="bg-secondary" ></th>
-            <th className="bg-secondary" >User</th>
-            <th className="bg-secondary" >Product</th>
-            <th className="bg-secondary" >Quantity</th>
-            <th className="bg-secondary" >Address</th>
-            <th className="bg-secondary" >Payment</th>
-            <th className="bg-secondary" >Status</th>
+            <th className="bg-secondary"></th>
+            <th className="bg-secondary">User</th>
+            <th className="bg-secondary">Product</th>
+            <th className="bg-secondary">Quantity</th>
+            <th className="bg-secondary">Address</th>
+            <th className="bg-secondary">Payment</th>
+            <th className="bg-secondary">Status</th>
 
-            <th className="bg-secondary" >Cancel</th>
+            <th className="bg-secondary">Cancel</th>
           </tr>
         </thead>
         <tbody>
-        {
-          orders.map(order=><OrderRow key={order._id} order={order} setDeletingOrder={setDeletingOrder} ></OrderRow>)
-        }
+          {orders.map((order) => (
+            <OrderRow
+              key={order._id}
+              order={order}
+              setDeletingOrder={setDeletingOrder}
+            ></OrderRow>
+          ))}
         </tbody>
-          </table>
-          {deletingOrder && (
+      </table>
+      {deletingOrder && (
         <DeleteOrderModal
           deletingDoctor={deletingOrder}
-          
           setDeletingDoctor={setDeletingOrder}
         ></DeleteOrderModal>
       )}

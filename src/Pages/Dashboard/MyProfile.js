@@ -8,14 +8,13 @@ import auth from "../../firebase.init";
 import Loading from "../Shared/Loading";
 
 const MyProfile = () => {
-    const [client, setClient] = useState({});
+  const [client, setClient] = useState({});
   const [updated, setUpdated] = useState(false);
   const [user] = useAuthState(auth);
   const email = user.email;
 
-  
   useEffect(() => {
-    fetch(`http://localhost:5000/user/${email}`, {
+    fetch(`https://stark-spire-17042.herokuapp.com/user/${email}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -41,7 +40,7 @@ const MyProfile = () => {
     };
     console.log(updatedClient);
     //todo Update user profile
-    fetch(`http://localhost:5000/user/${email}`, {
+    fetch(`https://stark-spire-17042.herokuapp.com/user/${email}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -66,18 +65,49 @@ const MyProfile = () => {
           <h2 className="text-4xl font-semibold text-accent my-5 ">
             User Information
           </h2>
-          <p className="text-lg ">Name: <span className="font-mono text-accent hover:underline text-xl">{user.displayName}</span></p>
-          <p className="text-lg ">Email: <span className="font-mono text-accent hover:underline text-xl" >{client.email}</span></p>
+          <p className="text-lg ">
+            Name:{" "}
+            <span className="font-mono text-accent hover:underline text-xl">
+              {user.displayName}
+            </span>
+          </p>
+          <p className="text-lg ">
+            Email:{" "}
+            <span className="font-mono text-accent hover:underline text-xl">
+              {client.email}
+            </span>
+          </p>
 
-          <p className="text-lg ">Education: <span className="font-mono text-accent hover:underline text-xl" >{client.education}</span></p>
-          <p className="text-lg ">Location: <span className="font-mono text-accent hover:underline text-xl" >{client.location}</span></p>
-          <p className="text-lg ">Phone: <span className="font-mono text-accent hover:underline text-xl" >{client.phone}</span></p>
-          <p className="text-lg ">LinkedIn Link: <span className="font-mono text-accent hover:underline text-xl" >{client.profileLink}</span></p>
+          <p className="text-lg ">
+            Education:{" "}
+            <span className="font-mono text-accent hover:underline text-xl">
+              {client.education}
+            </span>
+          </p>
+          <p className="text-lg ">
+            Location:{" "}
+            <span className="font-mono text-accent hover:underline text-xl">
+              {client.location}
+            </span>
+          </p>
+          <p className="text-lg ">
+            Phone:{" "}
+            <span className="font-mono text-accent hover:underline text-xl">
+              {client.phone}
+            </span>
+          </p>
+          <p className="text-lg ">
+            LinkedIn Link:{" "}
+            <span className="font-mono text-accent hover:underline text-xl">
+              {client.profileLink}
+            </span>
+          </p>
         </div>
-              <form className="text-center lg:ml-20 " onSubmit={handleSubmit(onSubmit)}>
-              <h2 className="text-2xl font-semibold text-accent my-5 ">
-            Update
-          </h2>
+        <form
+          className="text-center lg:ml-20 "
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <h2 className="text-2xl font-semibold text-accent my-5 ">Update</h2>
           {/*  Education input */}
           <div className="form-control w-full max-w-xs">
             <label className="label">

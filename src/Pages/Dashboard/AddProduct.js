@@ -4,59 +4,48 @@ import { useQuery } from "react-query";
 import { toast } from "react-toastify";
 
 const AddProduct = () => {
-    const {
-        register,
-        formState: { errors },
-        handleSubmit,
-        reset,
-      } = useForm();
-    
-      
-    
-      
-    
-      
-    
-      const onSubmit = async (data) => {
-        console.log(data);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
 
+  const onSubmit = async (data) => {
+    console.log(data);
 
-              const product = {
-                name: data.name,
-                price: data.price,
-                description: data.description,
-                  img: data.image,
-                  minOrder: data.minOrder,
-                  available: data.available,
-                
-              };
-              //todo Send a doctor to db
-              fetch("http://localhost:5000/product", {
-                method: "POST",
-                headers: {
-                  "content-type": "application/json",
-                  authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                },
-                body: JSON.stringify(product),
-              })
-                .then((res) => res.json())
-                  .then((inserted) => {
-                    console.log(inserted);
-                  if (inserted.insertedId) {
-                    toast.success("Product Added successfully");
-                    reset();
-                  }
-                });
+    const product = {
+      name: data.name,
+      price: data.price,
+      description: data.description,
+      img: data.image,
+      minOrder: data.minOrder,
+      available: data.available,
+    };
+    //todo Send a doctor to db
+    fetch("https://stark-spire-17042.herokuapp.com/product", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(product),
+    })
+      .then((res) => res.json())
+      .then((inserted) => {
+        console.log(inserted);
+        if (inserted.insertedId) {
+          toast.success("Product Added successfully");
+          reset();
+        }
+      });
+  };
 
-        
-      };
-    
-      
   return (
     <div className="flex  justify-center">
       <div className="w-1/2 my-10 ">
         <h2 className="text-4xl font-semibold text-accent ">Add A Product</h2>
-        <form  onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           {/*  name input */}
           <div className="form-control w-full max-w-xs">
             <label className="label">
@@ -79,7 +68,6 @@ const AddProduct = () => {
                   {errors.name?.message}
                 </span>
               )}
-              
             </label>
           </div>
           {/* Price input */}
@@ -96,7 +84,6 @@ const AddProduct = () => {
                   value: true,
                   message: "Price is Required",
                 },
-                
               })}
             />
             <label className="label">
@@ -105,7 +92,6 @@ const AddProduct = () => {
                   {errors.price?.message}
                 </span>
               )}
-              
             </label>
           </div>
           {/* Description */}

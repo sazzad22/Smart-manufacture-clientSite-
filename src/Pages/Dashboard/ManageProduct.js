@@ -8,20 +8,19 @@ import DeleteConfirmModal from "./DeleteConfirmModal";
 const ManageProduct = () => {
   const [deletingProduct, setDeletingProduct] = useState(null);
 
-    
   const {
     data: products,
     isLoading,
     refetch,
   } = useQuery("available", () =>
-    fetch("http://localhost:5000/product").then((res) => res.json())
+    fetch("https://stark-spire-17042.herokuapp.com/product").then((res) =>
+      res.json()
+    )
   );
   if (isLoading) {
     return <Loading></Loading>;
   }
-    const reversedProducts = [...products].reverse();
-    
-
+  const reversedProducts = [...products].reverse();
 
   return (
     <div
@@ -45,18 +44,16 @@ const ManageProduct = () => {
           <Product
             key={product._id}
             product={product}
-                setDeletingProduct={setDeletingProduct}
+            setDeletingProduct={setDeletingProduct}
           ></Product>
         ))}
-              {
-                  deletingProduct && 
-                  <DeleteConfirmModal
-                          deletingProduct={deletingProduct}
-                          refetch={refetch}
-                          setDeletingProduct={setDeletingProduct}
-
-                  ></DeleteConfirmModal>
-              }
+        {deletingProduct && (
+          <DeleteConfirmModal
+            deletingProduct={deletingProduct}
+            refetch={refetch}
+            setDeletingProduct={setDeletingProduct}
+          ></DeleteConfirmModal>
+        )}
       </div>
     </div>
   );

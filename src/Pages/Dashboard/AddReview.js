@@ -15,7 +15,9 @@ const AddReview = () => {
     isLoading,
     refetch,
   } = useQuery(["reviews"], () =>
-    fetch("http://localhost:5000/review").then((res) => res.json())
+    fetch("https://stark-spire-17042.herokuapp.com/review").then((res) =>
+      res.json()
+    )
   );
   if (isLoading) {
     return <Loading></Loading>;
@@ -26,10 +28,10 @@ const AddReview = () => {
     const review = {
       client: user?.displayName,
       email: user?.email,
-        review: reviewText,
-      rating:rating
+      review: reviewText,
+      rating: rating,
     };
-    const url = `http://localhost:5000/review`;
+    const url = `https://stark-spire-17042.herokuapp.com/review`;
     fetch(url, {
       method: "POST",
       headers: {
@@ -57,9 +59,9 @@ const AddReview = () => {
             type="text"
             placeholder="What's On Your Mind"
             class="input input-success input-bordered input-lg w-full lg:max-w-lg max-w-sm"
-                  />
-                  <br />
-                  <p className="text-accent text-2xl">Give ratings</p>
+          />
+          <br />
+          <p className="text-accent text-2xl">Give ratings</p>
 
           <select
             name=""

@@ -4,7 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import auth from "../../firebase.init";
 import { toast } from "react-toastify";
 
-
 const ProductDetail = () => {
   const { id } = useParams();
   const stockRef = useRef("");
@@ -13,10 +12,10 @@ const ProductDetail = () => {
   const [user] = useAuthState(auth);
 
   const [inventory, setInventory] = useState({});
-  const [legits,setLegits]=useState(true)
+  const [legits, setLegits] = useState(true);
 
   useEffect(() => {
-    const url = ` http://localhost:5000/product/${id}`;
+    const url = ` https://stark-spire-17042.herokuapp.com/product/${id}`;
     fetch(url, {
       method: "GET",
       headers: {
@@ -32,7 +31,7 @@ const ProductDetail = () => {
   //   quantity -= 1;
 
   //   const updatedInventory = { quantity };
-  //   const url = `  http://localhost:5000/product/${id}`;
+  //   const url = `  https://stark-spire-17042.herokuapp.com/product/${id}`;
   //   fetch(url, {
   //     method: "PUT",
   //     headers: {
@@ -47,18 +46,20 @@ const ProductDetail = () => {
   // };
   let quantityError;
 
-  const handleInput = e => {
+  const handleInput = (e) => {
     const quantity = parseInt(stockRef.current.value);
     const phone = parseInt(phoneRef.current.value);
 
-    const legit = quantity > inventory.minOrder && quantity < inventory.available;
-    setLegits(legit)
-    
-    
-  }
+    const legit =
+      quantity > inventory.minOrder && quantity < inventory.available;
+    setLegits(legit);
+  };
   if (!legits) {
-    quantityError = (<p className="text-red-500">"Add within available and minimum order quantity"</p>)
-    
+    quantityError = (
+      <p className="text-red-500">
+        "Add within available and minimum order quantity"
+      </p>
+    );
   }
 
   //add to Order
@@ -69,33 +70,31 @@ const ProductDetail = () => {
     const address = addressRef.current.value;
     const price = parseInt(inventory.price);
     const totalPrice = quantity * price;
-    
-      const order = {
-        name: user?.displayName,
-        email: user?.email,
-        phone: phone,
-        product: inventory.name,
-        price: totalPrice,
-        quantity: quantity,
-        address:address,
-      };
-      console.log(price ,totalPrice,order);
 
-  
-      fetch(`  http://localhost:5000/order`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(order),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("order", data);
-          toast.success('Order Booked')
-        });
-      event.target.reset();
-       
+    const order = {
+      name: user?.displayName,
+      email: user?.email,
+      phone: phone,
+      product: inventory.name,
+      price: totalPrice,
+      quantity: quantity,
+      address: address,
+    };
+    console.log(price, totalPrice, order);
+
+    fetch(`  https://stark-spire-17042.herokuapp.com/order`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(order),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("order", data);
+        toast.success("Order Booked");
+      });
+    event.target.reset();
   };
 
   return (
@@ -108,7 +107,7 @@ const ProductDetail = () => {
           <h3 className="font-bold text-4xl  lg:text-5xl text-gray-700 mb-2 ">
             {inventory.name}
           </h3>
-          
+
           <p className="text-gray-700 font font-medium">
             Price: ${" "}
             <span className="text-gray-800 font-mono font-semibold">
@@ -140,8 +139,7 @@ const ProductDetail = () => {
               {inventory.available}
             </span>
           </p>
-          
-           
+
           {/* Order Input */}
           <form onChange={handleInput}>
             {/* Name */}
@@ -204,24 +202,25 @@ const ProductDetail = () => {
               id="address"
               ref={addressRef}
             />
-            
+
             {/* button */}
-            
+
             {quantityError}
-            {
-              legits ? <input
-              type="submit"
-              value="Place Order"
+            {legits ? (
+              <input
+                type="submit"
+                value="Place Order"
                 className="btn btn-primary my-5 w-full max-w-xs"
                 onClick={handleOrder}
-              /> :
+              />
+            ) : (
               <input
-              type="submit"
-              value="Place Order"
-                  className="btn btn-primary my-5 w-full max-w-xs"
-                  disabled
-            />
-            }
+                type="submit"
+                value="Place Order"
+                className="btn btn-primary my-5 w-full max-w-xs"
+                disabled
+              />
+            )}
           </form>
         </div>
       </div>
