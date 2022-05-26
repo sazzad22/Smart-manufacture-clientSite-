@@ -36,13 +36,8 @@ const Part = ({ product, refetch,setDeletingProduct}) => {
           {minOrder}
         </p>
         <div class="card-actions justify-end">
-          <Link
-            className="btn btn-secondary shadow-xl text-blue-900"
-            to={`/product/${_id}`}
-          >
-            Purchase
-          </Link>
-          <label for="delete-confirm-modal" onClick={() => setDeletingProduct(product)} class="btn  btn-error">
+          
+          <label for="delete-confirm-modal" onClick={() => setDeletingProduct(product)} class="btn  btn-error shadow-xl btn-outline">
             Delete
           </label>
         </div>
