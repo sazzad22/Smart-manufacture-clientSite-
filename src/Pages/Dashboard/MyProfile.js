@@ -60,8 +60,8 @@ const MyProfile = () => {
       });
   };
   return (
-    <div className="flex  justify-center ">
-      <div className="w-full mb-20 lg:flex justify-center  ">
+    <div className="flex  justify-center lg:px-1 px-10 ">
+      <div className="w-full mb-20 lg:flex justify-center   ">
         <div>
           <h2 className="text-4xl font-semibold text-accent my-5 ">
             User Information
