@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-const OrderRow = ({ order,setDeletingOrder }) => {
+const OrderRow = ({ order,setDeletingOrder,index }) => {
     const [pending, setPending] = useState(true);
     
     return (
         
             <tr >
-              <th></th>
+        <th>{index + 1}</th>
               <td>{order?.name}</td>
               <td>{order?.product}</td>
               <td>{order?.quantity}</td>

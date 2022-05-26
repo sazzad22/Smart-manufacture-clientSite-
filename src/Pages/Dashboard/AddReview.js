@@ -49,9 +49,7 @@ const AddReview = () => {
         <h2 className="lg:text-4xl font-semibold text-accent text-center ">
           Leave a Review on our products or company
         </h2>
-        <div>
-          <p>{reviews.length}</p>
-        </div>
+        
         <div className="text-center lg:mt-20">
           <input
             ref={reviewRef}

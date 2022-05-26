@@ -48,6 +48,7 @@ const ManageOrder = () => {
 
   return (
     <div class="overflow-x-auto">
+      <h2 className="text-3xl lg:text-5xl font-bold text-accent text-center mb-10">Manage Orders</h2>
       <table class="table w-full">
         <thead>
           <tr>
@@ -63,8 +64,9 @@ const ManageOrder = () => {
           </tr>
         </thead>
         <tbody>
-          {orders.map((order) => (
+          {orders.map((order,index) => (
             <OrderRow
+            index={index}
               key={order._id}
               order={order}
               setDeletingOrder={setDeletingOrder}

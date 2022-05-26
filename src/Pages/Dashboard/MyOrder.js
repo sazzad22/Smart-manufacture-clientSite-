@@ -50,6 +50,7 @@ const MyOrder = () => {
 
   return (
     <div class="overflow-x-auto">
+      <h2 className="text-3xl lg:text-5xl font-bold text-accent text-center mb-10">Your Orders</h2>
       <table class="table  w-full">
         <thead>
           <tr>
