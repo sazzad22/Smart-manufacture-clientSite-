@@ -6,25 +6,25 @@ const Transactions = () => {
         {
           name: 'Worldwide services',
           description:
-            'We store your inventory in a combination of our fulfillment centers.Our system is available anywhere in the world.',
+            'We manufacture computer electronics in a combination of our fulfillment centers.Our producs is available anywhere in the world.',
           icon: GlobeAltIcon,
         },
         {
           name: 'No hidden fees',
           description:
-            'We provide our services at the best rate . We also dont charge with extra fees or any other hidden fees like the other companies offering services ',
+            'We manufacture high quality products at the best rate . We also dont charge with extra fees or any other hidden fees like the other companies offering services ',
           icon: ScaleIcon,
         },
         {
           name: 'Professional Support',
           description:
-            'Our website and service are handled by professionals .Connect your online store, import your products, then send us your inventory.',
+            'Our website and manufacturing services are handled by professionals .Connect your online store, import your products, then send us your location.',
           icon: LightningBoltIcon,
         },
         {
           name: 'Mobile app Support',
           description:
-            'We also provide mobile app support for you inventory management system.',
+            'We also provide mobile app support for you ordering and shipment system for your ordered goods.',
           icon: AnnotationIcon,
         },
       ]
