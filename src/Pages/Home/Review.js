@@ -15,6 +15,7 @@ const Review = ({ review }) => {
           </div>
           <div>
             <h4 className="font-semibold">{review.client}</h4>
+            <h4 className="font-semibold">Rating:{review.rating}</h4>
 
             
           </div>

@@ -26,7 +26,7 @@ const SignUp = () => {
 
 
   let signUpError;
-  if (loading || gLoading) {
+  if (loading || gLoading ||updating) {
     return <Loading></Loading>;
   }
 

@@ -28,6 +28,9 @@ const Header = () => {
           <li>
             <Link to={"blogs"}>Blogs</Link>
           </li>
+          <li>
+            <Link to={"portfolio"}>Portfolio</Link>
+          </li>
           
           <li>
             {user ? (

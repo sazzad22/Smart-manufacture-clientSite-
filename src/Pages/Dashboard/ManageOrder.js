@@ -6,9 +6,11 @@ import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 import Loading from "../Shared/Loading";
 import DeleteOrderModal from "./DeleteOrderModal";
+import OrderRow from "./OrderRow";
 
 const ManageOrder = () => {
   const [deletingOrder, setDeletingOrder] = useState(null);
+  
 
   const [orders, setOrders] = useState([]);
   const [user, loading, error] = useAuthState(auth);
@@ -51,32 +53,21 @@ const ManageOrder = () => {
       <table class="table w-full">
         <thead>
           <tr>
-            <th></th>
-            <th>User</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Address</th>
-            <th>Payment</th>
+            <th className="bg-secondary" ></th>
+            <th className="bg-secondary" >User</th>
+            <th className="bg-secondary" >Product</th>
+            <th className="bg-secondary" >Quantity</th>
+            <th className="bg-secondary" >Address</th>
+            <th className="bg-secondary" >Payment</th>
+            <th className="bg-secondary" >Status</th>
 
-            <th>Cancel</th>
+            <th className="bg-secondary" >Cancel</th>
           </tr>
         </thead>
         <tbody>
-          {orders.map((a, index) => (
-            <tr key={a._id}>
-              <th>{index + 1}</th>
-              <td>{a?.name}</td>
-              <td>{a?.product}</td>
-              <td>{a?.quantity}</td>
-              <td>{a?.address}</td>
-              <td>
-                <button className="btn btn-sm">Pay</button>
-              </td>
-              <td>
-                <label for='delete-order-modal' onClick={()=>setDeletingOrder(a)} className="btn btn-sm btn-error">Delete</label>
-              </td>
-            </tr>
-          ))}
+        {
+          orders.map(order=><OrderRow key={order._id} order={order} setDeletingOrder={setDeletingOrder} ></OrderRow>)
+        }
         </tbody>
           </table>
           {deletingOrder && (

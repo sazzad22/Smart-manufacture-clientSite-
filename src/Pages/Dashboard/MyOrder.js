@@ -1,30 +1,27 @@
-import { signOut } from 'firebase/auth';
-import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import auth from '../../firebase.init';
-import Loading from '../Shared/Loading';
-import DeleteOrderModal from './DeleteOrderModal';
+import { signOut } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import auth from "../../firebase.init";
+import Loading from "../Shared/Loading";
+import DeleteOrderModal from "./DeleteOrderModal";
 
 const MyOrder = () => {
   const [deletingOrder, setDeletingOrder] = useState(null);
 
-    const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
-      fetch(
-        `http://localhost:5000/order?email=${user.email}`,
-        {
-          method: "GET",
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
+      fetch(`http://localhost:5000/order?email=${user.email}`, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
         .then((res) => {
           if (res.status === 401 || res.status === 403) {
             signOut(auth);
@@ -35,8 +32,7 @@ const MyOrder = () => {
         })
         .then((data) => setOrders(data));
     }
-  }, [user,orders,navigate]);
-    
+  }, [user, orders, navigate]);
 
   if (loading) {
     return <Loading></Loading>;
@@ -48,45 +44,74 @@ const MyOrder = () => {
       </div>
     );
   }
-  
-    return (
-        <div class="overflow-x-auto">
-      <table class="table w-full">
-        <thead>
-          <tr>
-            <th></th>
-            <th>User</th>
-            <th>Product</th>
-              <th>Quantity</th>
-              <th>Address</th>
-            <th>Payment</th>
-            
-            <th>Cancel</th>
+
+  return (
+    <div class="overflow-x-auto">
+      <table class="table  w-full">
+        <thead >
+          <tr >
+            <th className="bg-secondary"></th>
+            <th className="bg-secondary">User</th>
+            <th className="bg-secondary">Product</th>
+            <th className="bg-secondary">Quantity</th>
+            <th className="bg-secondary">Total Price</th>
+            <th className="bg-secondary">Address</th>
+            <th className="bg-secondary">Payment</th>
+
+            <th className="bg-secondary">Cancel</th>
           </tr>
         </thead>
         <tbody>
-          {orders.map((a, index ) => (
+          {orders.map((a, index) => (
             <tr key={a._id}>
               <th>{index + 1}</th>
               <td>{a?.name}</td>
               <td>{a?.product}</td>
               <td>{a?.quantity}</td>
+              <td>{a?.price}</td>
               <td>{a?.address}</td>
-              <td><button className='btn btn-sm'>Pay</button></td>
-              <td><label for='delete-order-modal' onClick={()=>setDeletingOrder(a)} className="btn btn-sm btn-error">Delete</label></td>
+
+              {/* Pay or paid */}
+              <td>
+                {a.price && !a.paid && (
+                  <Link to={`/dashboard/payment/${a._id}`}>
+                    <button className="btn btn-sm btn-success">pay</button>
+                  </Link>
+                )}
+                {a.price && a.paid && (
+                  <div>
+                    <p>
+                      <span className="text-success border">Paid</span>
+                    </p>
+                    <p>
+                      Transaction id:{" "}
+                      <span className="text-success">{a.transactionId}</span>
+                    </p>
+                  </div>
+                )}
+              </td>
+
+              <td>
+                {a.paid ? <button className="btn btn-sm" disabled>Delete</button> : <label
+                  for="delete-order-modal"
+                  onClick={() => setDeletingOrder(a)}
+                  className="btn btn-sm btn-error" 
+                >
+                  Delete
+                </label>}
+              </td>
             </tr>
           ))}
         </tbody>
-        </table>
-        {deletingOrder && (
+      </table>
+      {deletingOrder && (
         <DeleteOrderModal
           deletingDoctor={deletingOrder}
-          
           setDeletingDoctor={setDeletingOrder}
         ></DeleteOrderModal>
       )}
     </div>
-    );
+  );
 };
 
 export default MyOrder;

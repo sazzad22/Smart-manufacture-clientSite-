@@ -67,17 +67,20 @@ const ProductDetail = () => {
     const quantity = parseInt(stockRef.current.value);
     const phone = parseInt(phoneRef.current.value);
     const address = addressRef.current.value;
-    
+    const price = parseInt(inventory.price);
+    const totalPrice = quantity * price;
     
       const order = {
         name: user?.displayName,
         email: user?.email,
         phone: phone,
         product: inventory.name,
+        price: totalPrice,
         quantity: quantity,
         address:address,
       };
-      console.log(order);
+      console.log(price ,totalPrice,order);
+
   
       fetch(`  http://localhost:5000/order`, {
         method: "POST",
