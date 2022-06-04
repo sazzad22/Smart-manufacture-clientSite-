@@ -15,6 +15,7 @@ const ManageOrder = () => {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
 
+  //get orders
   useEffect(() => {
     if (user) {
       fetch(`https://stark-spire-17042.herokuapp.com/order`, {
