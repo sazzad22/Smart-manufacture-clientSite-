@@ -6,6 +6,11 @@
 
 ### About the Website
 * The website is for a manufacturing company
+* Built responsive single page application with multiple routes ( part 
+details,order page, manage orders , user profile etc) and admin features and authorization
+* Implemented buy parts, Authentication with Login ,SignUp using firebase and 
+security using JWT also payment gateway using stripe
+* Created Administrative routes for the site admin to manage website
 * It is an efficient single page application
 * The site diplays the manufacturing products that the company provides ,as well as their details and prices.
 * User can buy product from the company. 
